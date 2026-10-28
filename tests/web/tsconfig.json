@@ -1,0 +1,19 @@
+{
+  "extends": "../../tooling/tsconfig/web.json",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    // The suite type-checks the template's own code and tests (apps/web, by
+    // the `@/` path), which are written for the template's compiler options:
+    // strict, without unchecked-index checks.
+    "noUncheckedIndexedAccess": false,
+    "types": ["node", "next"],
+    "paths": {
+      "@/*": ["../../apps/web/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
+}

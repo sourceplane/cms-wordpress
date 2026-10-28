@@ -1,0 +1,101 @@
+apiVersion: sourceplane.io/v1
+kind: Component
+metadata:
+  name: web
+  description: The headless WordPress site (Next.js on Cloudflare Workers + Static Assets via @opennextjs/cloudflare, reading a WordPress REST API, per environment)
+spec:
+  type: cloudflare-workers-assets-turbo
+  lifecycle: production
+  owner: platform
+  # Its pages, attached to it in the workspace's catalog: what the Docs
+  # library shows for it, and what the catalog's docs and runbook checks read.
+  # Generated from what this manifest and its sources declare.
+  docs:
+    overview: docs/overview.md
+    pages:
+      - { path: docs/architecture.md, role: architecture, title: Architecture }
+      - { path: docs/runbook.md, role: runbook, title: Runbook }
+  # `app`, not `web`: a domain and a component share one name space in the
+  # catalog, and a domain called `web` hid this component from it.
+  domain: app
+  path: apps/web
+  # Its own lane per environment: the Next.js build is the longest job in the
+  # plan, and a shared lane would wait on it.
+  lane: isolated
+  # No dependsOn: the site reads no wiring and binds nothing, so there is no
+  # infra component to deploy before it. A component under infra/ that this
+  # Worker comes to read wiring from goes here, `mode: enforced` with a
+  # `modeRules` entry making it advisory on github-pull-request, so one
+  # convergence applies it first.
+  #
+  # The WordPress site's URL: a value `next build` inlines into the server
+  # bundle, stored per environment as the product's secret WORDPRESS_URL
+  # (README → Connecting WordPress). A BEST-EFFORT reference,
+  # wire-now-seed-later: a key nobody has stored yet is skipped when the job
+  # resolves its secrets (no env var, no failure), and a build without a URL
+  # is the site with its sample posts and a "no WordPress site is connected"
+  # notice — so a fresh product deploys and serves before its owner has
+  # pointed it at a WordPress at all. The webhook secret is not here: it is
+  # read at request time, a Worker secret.
+  optionalSecretEnv:
+    WORDPRESS_URL: "secret://cms-wordpress/cms-wordpress/{{ .environment }}/WORDPRESS_URL"
+  subscribe:
+    environments:
+      - name: dev
+        profile: verify
+      - name: stage
+        profile: verify
+        profileRules:
+          - profile: deploy
+            when:
+              triggerRef: github-push-main
+      - name: prod
+        profile: verify
+        profileRules:
+          - profile: deploy
+            when:
+              triggerRef: github-push-main
+  parameters:
+    nodeVersion: "22"
+    pnpmVersion: "10.12.1"
+
+    workspaceDir: ../..
+    appDir: .
+
+    turboFilter: "@app/web"
+    wranglerConfig: wrangler.jsonc
+
+    # @opennextjs/cloudflare emits a Worker entrypoint plus a static-assets
+    # directory bound via ASSETS — both deploy in one `wrangler deploy`.
+    workerEntrypoint: .open-next/worker.js
+    assetsDir: .open-next/assets
+
+    # Per-env worker name: cms-wordpress-web-{dev,stage,prod}.
+    workerName: cms-wordpress-web
+    environmentAwareWorkerName: true
+
+    # The account's workers.dev subdomain; exported to the smoke step as
+    # ${WORKERS_DEV_SUBDOMAIN} and used to build ${DEPLOYED_URL}.
+    workersDevSubdomain: your-workers-subdomain
+
+    installCommand: pnpm install --frozen-lockfile
+    # The site's public origin (the sitemap, canonical, Open Graph and OG-image
+    # links are absolute): the environment's SITE_URL when intent.yaml sets one
+    # (a custom domain), else its workers.dev URL. The subdomain is written out
+    # rather than read from ${WORKERS_DEV_SUBDOMAIN}, which the composition
+    # exports to the smoke step only. ${ORUN_ENVIRONMENT} the runner sets for
+    # every step.
+    buildCommand: NEXT_PUBLIC_SITE_URL="${SITE_URL:-https://cms-wordpress-web-${ORUN_ENVIRONMENT}.your-workers-subdomain.workers.dev}" pnpm exec turbo run build --filter=@app/web
+
+    # Smoke: the posts page renders its count ("N posts found" — rendered by
+    # the Worker on every request, from the sample site before a WordPress is
+    # connected and from the WordPress after, an empty one included), and
+    # /api/revalidate refuses a webhook without the secret (401) — the route
+    # runs in the Worker. Read-only: it revalidates nothing. Each response is
+    # buffered before grep so an early match cannot SIGPIPE curl.
+    smokeCommand: "html=$(curl -sfL \"${DEPLOYED_URL}/posts\") && echo \"${html}\" | grep -Eq 'posts?(<!-- -->)? found' && test \"$(curl -s -o /dev/null -w '%{http_code}' -X POST -H 'content-type: application/json' -d '{}' \"${DEPLOYED_URL}/api/revalidate\")\" = 401"
+  labels:
+    team: platform
+    layer: delivery
+    surface: web
+    runtime: cloudflare
