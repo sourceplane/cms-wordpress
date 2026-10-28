@@ -1,0 +1,31 @@
+# The epic's declaration. metadata.name equals the directory name; metadata.key
+# is the task-key prefix this epic reserves (WP → WP-1, WP-2, …). Owner, target
+# date and health are the platform's — never written here.
+apiVersion: orun.io/v1
+kind: Epic
+metadata:
+  name: cms-wordpress
+  key: WP
+spec:
+  title: "Vercel's Next.js Starter for WordPress Headless CMS on Cloudflare Workers"
+  summary: "9d8's next-wp — a Next.js front end for a WordPress site used as a headless CMS: posts, pages, categories, tags and authors from its REST API, with search, filters, pagination, a sitemap, Open Graph images and a revalidation webhook — runs on Cloudflare Workers + Static Assets through @opennextjs/cloudflare, serves bundled sample content until a WordPress is connected, and becomes an Orun baseline that takes a new site from nothing to live on stage and prod in one landing."
+  state: started
+  milestones:
+    - name: "WP0 — the spec"
+      exitCriteria:
+        - "the repository is born with its intent, CI, tooling and spec index, and this doc set and the task contracts are on main"
+      tasks: [WP-1]
+    - name: "WP1 — the site on Workers"
+      exitCriteria:
+        - "apps/web is the upstream template, every page that reads WordPress rendered per request, built by OpenNext into one Worker with Static Assets"
+        - "with no WORDPRESS_URL the site renders bundled sample content in the REST API's shapes, under a notice, and never fails"
+        - "`pnpm typecheck`, `pnpm lint`, `pnpm test` (the template's own tests among them) and `pnpm build` are green"
+        - "`wrangler dev` serves every route — posts, filters, search, a post, pages, the term and author lists, the sitemap, the Open Graph image — and the webhook refuses a request without its secret"
+        - "the README says how to run, test, preview and deploy it, how to connect WordPress, and how every Vercel piece maps to Cloudflare"
+      tasks: [WP-2]
+    - name: "WP2 — a baseline"
+      exitCriteria:
+        - "blueprint.yaml (the console card) and repo-blueprint.yaml (the build) take a new site from nothing to live on stage and prod in one landing, then record it"
+        - "a site built from it carries the site only, renamed throughout to its own name, repository and Worker, with the template's credit intact"
+        - "Baseline CI is green: contract tests, generated component docs, the blueprint read by the pinned orun, the leak gate, the offline bootstrap and the end-to-end tier"
+      tasks: [WP-3]
