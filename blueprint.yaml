@@ -42,7 +42,7 @@ spec:
       - layer: Edge
         items: [web]
       - layer: Content
-        items: [WordPress (your site's REST API, connected after the build)]
+        items: [WordPress REST API (connected after the build)]
       - layer: Delivery
         items: [GitHub Actions, OpenNext, wrangler]
     outcome:

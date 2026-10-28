@@ -23,7 +23,8 @@ infra component; WordPress stays the owner's.
 
 | | |
 |---|---|
-| Latest tag | `baseline-v1` — WP0 to WP2: the repository, the site on Workers with its sample mode, and the baseline (blueprint, phases, tests) |
+| Latest tag | `baseline-v2` — WP3: the console card reads with the platform's own reader (an inline list item no longer carries an apostrophe and a comma) |
+| Before it | `baseline-v1` — WP0 to WP2: the repository, the site on Workers with its sample mode, and the baseline (blueprint, phases, tests); its card is refused by the platform's reader |
 | Proven live | Not yet: proven offline in Baseline CI only, unconnected (risk WP-A); no build has read a live WordPress yet (risk WP-C) |
 
 ## Where to read
