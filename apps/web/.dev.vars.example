@@ -1,0 +1,8 @@
+# Local Worker secrets for `wrangler dev` / `opennextjs-cloudflare preview`.
+# Copy to .dev.vars (git-ignored). In stage/prod this is a Worker secret, set
+# once per environment with
+#   wrangler secret put WORDPRESS_WEBHOOK_SECRET --name cms-wordpress-web-<env>
+# (README → Connecting WordPress); the deploy lane never sets or clears it.
+# The WordPress URL is not here: it is inlined at build time (.env.example).
+# Optional: without it /api/revalidate refuses every webhook with a 401.
+WORDPRESS_WEBHOOK_SECRET=

@@ -1,0 +1,78 @@
+import { ImageResponse } from "next/og";
+import { NextRequest } from "next/server";
+
+// The Node.js runtime (OpenNext runs no edge functions); next/og renders
+// under nodejs_compat.
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+
+    // Get title and description from the URL query params
+    const title = searchParams.get("title");
+    const description = searchParams.get("description");
+
+    return new ImageResponse(
+      (
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            padding: "80px",
+            backgroundColor: "white",
+            backgroundImage:
+              "radial-gradient(circle at 25px 25px, lightgray 2%, transparent 0%), radial-gradient(circle at 75px 75px, lightgray 2%, transparent 0%)",
+            backgroundSize: "100px 100px",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              fontSize: 60,
+              fontStyle: "normal",
+              color: "black",
+              marginBottom: 30,
+              whiteSpace: "pre-wrap",
+              lineHeight: 1.2,
+              maxWidth: "800px",
+            }}
+          >
+            {title}
+          </div>
+          {description && (
+            <div
+              style={{
+                fontSize: 30,
+                fontStyle: "normal",
+                color: "gray",
+                whiteSpace: "pre-wrap",
+                lineHeight: 1.2,
+                maxWidth: "800px",
+                display: "-webkit-box",
+                WebkitLineClamp: "2",
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {description}
+            </div>
+          )}
+        </div>
+      ),
+      {
+        width: 1200,
+        height: 630,
+      }
+    );
+  } catch (e) {
+    console.log(e instanceof Error ? e.message : String(e));
+    return new Response(`Failed to generate the image`, {
+      status: 500,
+    });
+  }
+}
