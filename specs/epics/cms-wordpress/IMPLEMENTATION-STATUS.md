@@ -4,7 +4,7 @@
 |---|---|---|
 | WP0 — the spec | ✅ | the repository's first commit |
 | WP1 — the site on Workers | ✅ | WP-2 |
-| WP2 — a baseline | planned | WP-3 |
+| WP2 — a baseline | ✅ | WP-3, tagged `baseline-v1` |
 
 ## Departures from the upstream template
 
