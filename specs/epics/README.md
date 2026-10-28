@@ -7,5 +7,6 @@ folder is the adoption; the merge creates the epic in the workspace.
 
 | Epic | Cluster | Status | What it is |
 |------|---------|--------|------------|
+| [`cms-wordpress/`](./cms-wordpress/) | **WP** | In progress (WP0) | Vercel's Next.js Starter for WordPress Headless CMS — 9d8's next-wp, posts, pages and terms from a WordPress REST API — on Cloudflare Workers + Static Assets through OpenNext, serving sample content until a WordPress is connected, and an Orun baseline that instantiates it (WP2) |
 
 As-built ≠ intent: what shipped lives in each epic's `IMPLEMENTATION-STATUS.md`.

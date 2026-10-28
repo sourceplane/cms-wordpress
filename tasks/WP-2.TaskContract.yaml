@@ -1,0 +1,18 @@
+apiVersion: orun.io/v1
+kind: TaskContract
+metadata:
+  name: WP-2
+  title: "The site on Workers"
+spec:
+  goal: Vercel's Next.js Starter for WordPress Headless CMS runs on Cloudflare Workers + Static Assets through OpenNext, serving sample content until a WordPress is connected, with its tests and a README that says how it maps to Vercel
+  affects:
+    - apps/web
+    - tests/web
+    - pnpm-lock.yaml
+    - pnpm-workspace.yaml
+    - README.md
+    - .gitignore
+  doneWhen:
+    - pnpm typecheck, lint, test and build are green
+    - wrangler dev serves every route the template has, unconnected, and the webhook answers 401 without its secret
+  gates: []
