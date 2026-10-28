@@ -9,7 +9,7 @@ metadata:
 spec:
   title: "Vercel's Next.js Starter for WordPress Headless CMS on Cloudflare Workers"
   summary: "9d8's next-wp — a Next.js front end for a WordPress site used as a headless CMS: posts, pages, categories, tags and authors from its REST API, with search, filters, pagination, a sitemap, Open Graph images and a revalidation webhook — runs on Cloudflare Workers + Static Assets through @opennextjs/cloudflare, serves bundled sample content until a WordPress is connected, and becomes an Orun baseline that takes a new site from nothing to live on stage and prod in one landing."
-  state: started
+  state: completed
   milestones:
     - name: "WP0 — the spec"
       exitCriteria:

@@ -9,7 +9,7 @@ landing.**
 
 | | |
 |---|---|
-| Status | In progress — WP1 on main: the site runs on Workers |
+| Status | ✅ Shipped (`baseline-v1`) — proven offline in Baseline CI; not yet live (risk WP-A) |
 | Upstream | [9d8dev/next-wp](https://github.com/9d8dev/next-wp) (MIT), at `4a2caeb` (2026-08-06) — Vercel's Next.js Starter for WordPress Headless CMS |
 | Reference | [cms-sanity](https://github.com/sourceplane/cms-sanity) — the same scaffolding, tests and bootstrap, and the unconnected sample mode; [portfolio-starter-kit](https://github.com/sourceplane/portfolio-starter-kit) — the origin per environment |
 | Key | `WP` |
