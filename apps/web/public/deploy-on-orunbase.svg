@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164 32" width="164" height="32" role="img" aria-label="Deploy on Orunbase">
+  <rect width="164" height="32" rx="6" fill="#171717"/>
+  <g transform="translate(10 6) scale(0.41667)">
+    <path d="M5.06 31.58 A20.4 20.4 0 1 1 42.94 31.58 Z" fill="#FAFAFA"/>
+    <path d="M10.43 39.23 A20.4 20.4 0 0 0 37.57 39.23 Z" fill="#E3B34C"/>
+  </g>
+  <text x="38" y="20.5" textLength="116" lengthAdjust="spacingAndGlyphs" font-family="'Hanken Grotesk', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="600" font-size="13" fill="#FAFAFA">Deploy on Orunbase</text>
+</svg>
